@@ -8,6 +8,8 @@ app.use(bodyParzer.json());
 
 require('./app/routers/categories.router')(app);
 require('./app/routers/food.router')(app);
+require('./app/routers/favourites.router')(app);
+require('./app/routers/user.routers')(app);
 
 
 app.listen(4000, function () {
