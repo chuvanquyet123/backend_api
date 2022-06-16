@@ -11,13 +11,4 @@ module.exports = function (router) {
 
     router.put("/favourites", favouritesController.update_favourites);
 
-    // router.get("/food/list", foodController.get_list);
-
-    // router.get("/food/detail/:id", foodController.detail);
-
-    // router.post("/food/add", foodController.add_food);
-
-    // router.delete("/food/delete/:id", foodController.remove_food);
-
-    // router.put("/food/update", foodController.update_food);
 };
