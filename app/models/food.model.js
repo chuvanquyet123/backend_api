@@ -5,7 +5,7 @@ const Food = function (food) {
   this.name_product = food.name_product;
   this.price = food.price;
   this.image = food.image;
-  this.descriptions = food.descriptions
+  this.descriptions = food.descriptions;
 };
 
 Food.get_all = function (result) {
@@ -67,6 +67,21 @@ Food.update = function (b, result) {
       } else {
         result(b);
         return console.log("update done");
+      }
+    }
+  );
+};
+
+Food.search = function (search, result) {
+  db.query(
+    "SELECT * FROM products WHERE name_product LIKE ?",
+    ['%' + search + '%'],
+    function (err, food) {
+      if (err || food.length == 0) {
+        result(null);
+      } else {
+        console.log(food);
+        result(food);
       }
     }
   );

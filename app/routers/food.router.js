@@ -11,4 +11,6 @@ module.exports = function (router) {
 
     router.put("/foods", foodController.update_food);
 
+    router.get("/search", foodController.search_food);
+
 };
