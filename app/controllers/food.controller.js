@@ -1,9 +1,10 @@
 var Food = require("../models/food.model");
 
 exports.get_list = function (req, res) {
+  const categoryID = req.query.category_id
   Food.get_all(function (data) {
-    res.send({ result: data });
-  });
+    res.send(data);
+  }, categoryID );
 };
 
 exports.detail = function (req, res) {

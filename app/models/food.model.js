@@ -8,12 +8,20 @@ const Food = function (food) {
   this.descriptions = food.descriptions;
 };
 
-Food.get_all = function (result) {
-  db.query("SELECT * FROM products", function (err, food) {
+Food.get_all = function (handleResult, categoryID) {
+  const query = categoryID
+    ? `SELECT categories.category_id, categories_product.categories_product_id, products.product_id, products.name_product, products.price, products.image, products.descriptions
+        FROM (products
+        INNER JOIN categories_product ON products.product_id = categories_product.product_id
+        INNER JOIN categories ON categories.category_id = categories_product.category_id )
+        WHERE categories.category_id= ${categoryID};`
+    : "SELECT * FROM products";
+
+  db.query(query, function (err, food) {
     if (err) {
       return null;
     } else {
-      result(food);
+      handleResult(food);
     }
   });
 };
@@ -75,7 +83,7 @@ Food.update = function (b, result) {
 Food.search = function (search, result) {
   db.query(
     "SELECT * FROM products WHERE name_product LIKE ?",
-    ['%' + search + '%'],
+    ["%" + search + "%"],
     function (err, food) {
       if (err || food.length == 0) {
         result(null);

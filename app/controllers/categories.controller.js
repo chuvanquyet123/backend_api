@@ -2,13 +2,13 @@ var Categories = require("../models/categories.model");
 
 exports.get_list = function (req, res) {
   Categories.get_all(function (data) {
-    res.send({ result: data });
+    res.send( data );
   });
 };
 
 exports.detail = function (req, res) {
   Categories.getById(req.params.id, function(response){
-    res.send({result: response})
+    res.send(response)
   });
 };
 

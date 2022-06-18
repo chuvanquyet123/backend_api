@@ -1,7 +1,7 @@
 const db = require("../commom/connect");
 
 const Categories = function (categories) {
-  this.categories_id = categories.categories_id;
+  this.category_id = categories.category_id;
   this.name_category = categories.name_category;
 };
 Categories.get_all = function (result) {
@@ -16,7 +16,7 @@ Categories.get_all = function (result) {
 
 Categories.getById = function (id, result) {
   db.query(
-    "SELECT * FROM categories WHERE categories_id= ?",
+    "SELECT * FROM categories WHERE category_id= ?",
     id,
     function (err, categories) {
       if (err || categories.length == 0) {
@@ -33,14 +33,14 @@ Categories.create = function (data, result) {
     if (err) {
       result(null);
     } else {
-      result({ ...data, id_cate: categories.insertID });
+      result({ ...data, categories_product_id: categories.insertID });
     }
   });
 };
 
 Categories.remove = function (id, result) {
   db.query(
-    "DELETE FROM categories WHERE categories_id = ?",
+    "DELETE FROM categories_product WHERE categories_product_id = ?",
     id,
     function (err, categories) {
       if (err) {
@@ -54,8 +54,8 @@ Categories.remove = function (id, result) {
 
 Categories.update = function (b, result) {
   db.query(
-    "UPDATE categories SET name_category=? WHERE categories_id=? ",
-    [b.name_category, b.categories_id],
+    "UPDATE categories_product SET categories_id=? WHERE categories_product_id = ? ",
+    [b.ategories_product_id, b.categories_id],
     function (err, categories) {
       if (err) {
         result(null);
