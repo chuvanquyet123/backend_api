@@ -8,13 +8,14 @@ const Food = function (food) {
   this.descriptions = food.descriptions;
 };
 
-Food.get_all = function (handleResult, categoryID) {
-  const query = categoryID
+Food.get_all = function (handleResult, categoryID, limit) {
+  try{
+    const query = categoryID
     ? `SELECT categories.category_id, categories_product.categories_product_id, products.product_id, products.name_product, products.price, products.image, products.descriptions
         FROM (products
         INNER JOIN categories_product ON products.product_id = categories_product.product_id
         INNER JOIN categories ON categories.category_id = categories_product.category_id )
-        WHERE categories.category_id= ${categoryID};`
+        WHERE categories.category_id= ${categoryID}` + (limit? ` LIMIT ${limit};` : `;`)
     : "SELECT * FROM products";
 
   db.query(query, function (err, food) {
@@ -24,17 +25,21 @@ Food.get_all = function (handleResult, categoryID) {
       handleResult(food);
     }
   });
+  }catch(error){
+    console.log(error)
+  }
+  
 };
 
 Food.getById = function (id, result) {
   db.query(
-    "SELECT * FROM products WHERE product_id = ?",
+    "SELECT * FROM products WHERE product_id = ?;",
     id,
     function (err, food) {
       if (err || food.length == 0) {
         result(null);
       } else {
-        result(food[0]);
+        result(food);
       }
     }
   );

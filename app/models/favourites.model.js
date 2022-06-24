@@ -5,15 +5,27 @@ const Favourites = function (favourites) {
   this.product_id = favourites.product_id;
   this.user_id = favourites.user_id;
 };
-Favourites.get_all = function (result) {
-  db.query("SELECT * FROM favourites", function (err, favourites) {
-    if (err) {
-        console.log(err)
-      return null;
+Favourites.get_all = function (result, userId) {
+  try {
+    if (userId) {
+      const query = `SELECT users.user_id, favourites.favourite_id, products.product_id, products.name_product, products.price, products.image, products.descriptions 
+    FROM (users INNER JOIN favourites ON users.user_id = favourites.user_id INNER JOIN products ON products.product_id = favourites.product_id) 
+    WHERE users.user_id= ${userId};`;
+
+      db.query(query, function (err, favourites) {
+        if (err) {
+          console.log(err);
+          return null;
+        } else {
+          result(favourites);
+        }
+      });
     } else {
-      result(favourites);
+      result([]);
     }
-  });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 Favourites.getById = function (id, result) {
@@ -31,24 +43,28 @@ Favourites.getById = function (id, result) {
 };
 
 Favourites.create = function (data, result) {
-  db.query("INSERT INTO favourites SET ?", data, function (err, favourites) {
-    if (err) {
-      result(null);
-    } else {
-      result({ ...data, favourite_id: favourites.insertID });
-    }
-  });
-};
-
-Favourites.remove = function (id, result) {
   db.query(
-    "DELETE FROM favourites WHERE favourite_id= ?",
-    id,
-    function (err, categories) {
+    `INSERT INTO favourites (user_id, product_id) VALUES (?, ?);`,
+    [data.user_id, data.product_id],
+    function (err, favourites) {
       if (err) {
         result(null);
       } else {
-        result("delete food done " + id);
+        result({ ...data, favourite_id: favourites.insertID});
+      }
+    }
+  );
+};
+
+Favourites.remove = function (data, result) {
+  db.query(
+    `DELETE FROM favourites WHERE user_id = ? AND product_id= ?;`,
+    [data.user_id, data.product_id],
+    function (err, favourites) {
+      if (err) {
+        result(null);
+      } else {
+        result("delete food done ");
       }
     }
   );

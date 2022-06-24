@@ -1,9 +1,10 @@
 var Favourites = require("../models/favourites.model");
 
 exports.get_list = function (req, res) {
+  const userId = req.query.user_id;
   Favourites.get_all(function (data) {
-    res.send({ result: data });
-  });
+    res.send(data);
+  }, userId);
 };
 
 exports.detail = function (req, res) {
@@ -14,15 +15,14 @@ exports.detail = function (req, res) {
 
 exports.add_favourites = function (req, res) {
   var data = req.body;
-
   Favourites.create(data, function (response) {
-    res.send({ result: response });
+    res.send(response );
   });
 };
 
 exports.remove_favourites = function(req, res){
-    var id = req.params.id;
-    Favourites.remove(id, function(response){
+    var data = req.body;
+    Favourites.remove(data, function(response){
         res.send({result: response});
     });
 };

@@ -7,7 +7,7 @@ module.exports = function (router) {
 
     router.post("/favourites", favouritesController.add_favourites);
 
-    router.delete("/favourites/:id", favouritesController.remove_favourites);
+    router.delete("/favourites", favouritesController.remove_favourites);
 
     router.put("/favourites", favouritesController.update_favourites);
 
