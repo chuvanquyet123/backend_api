@@ -13,10 +13,6 @@ User.login = function (data, result) {
     db.query(
     "SELECT * FROM users WHERE email = ? AND password = ?",
     [data.email, data.password],
-    // bcrypt.hash(password, 5, function (err, hash) {
-    //   console.log(hash);
-
-    // });
     function (err, user) {
       if (err || user.length == 0) {
         result(null);
