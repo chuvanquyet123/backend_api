@@ -21,6 +21,7 @@ require('./app/routers/food.router')(app);
 require('./app/routers/favourites.router')(app);
 require('./app/routers/user.routers')(app);
 require('./app/routers/carts.router')(app);
+require('./app/routers/bills.router')(app);
  
 app.listen(4000, function () {
     console.log("server localhost 4000");
