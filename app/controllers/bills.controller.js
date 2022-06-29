@@ -11,5 +11,6 @@ exports.add_bill = function (req, res) {
     var data = req.body;
     Bill.create(data, function(response){
         res.send(response);
+        console.log(response.cart)
     });
 };

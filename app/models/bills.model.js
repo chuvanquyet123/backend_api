@@ -8,13 +8,11 @@ const Bill = function (bills) {
 Bill.getBill = function (result, userId) {
   try {
     if (userId) {
-      const query = `SELECT users.user_id, bills.bill_id, bill_product.bill_product_id, products.product_id, bill_product.price, bill_product.quantity, bills.created_at
+      const query = `SELECT users.user_id, bills.bill_id, bills.created_at
       FROM (users
       INNER JOIN bills ON users.user_id = bills.user_id
-      INNER JOIN bill_product ON bills.bill_id = bill_product.bill_id
-      INNER JOIN products ON products.product_id = bill_product.product_id
       ) 
-      WHERE users.user_id = ${userId};`;
+      WHERE users.user_id = ${userId} GROUP BY bills.bill_id;`;
 
       db.query(query, function (error, bills) {
         if (error) {
@@ -33,9 +31,10 @@ Bill.getBill = function (result, userId) {
 };
 
 Bill.create = function(data, result){
+  const getDateTime = new Date().toISOString().slice(0, 19).replace(' ', ' ');
     db.query(
-        `INSERT INTO bills (bill_id, user_id) VALUES (?, ?);`,
-        [data.user_id, data.bill_id],
+        `INSERT INTO bills ( user_id, created_at) VALUES ( ?, ?);`,
+        [data.user_id, getDateTime],
         function (error, bills) {
             if (error){
                 result(null);
