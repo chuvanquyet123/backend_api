@@ -83,15 +83,14 @@ Bill.getById = function (billId, result, userId) {
       db.query(
         `SELECT bills.created_at, products.name_product, products.image, bill_product.quantity, bill_product.price
         FROM (bills
-        INNER JOIN bill_product ON bills.bill_id = bill_product.bill_product_id
-        INNER JOIN products ON products.product_id = bill_product.bill_product_id
+        INNER JOIN bill_product ON bills.bill_id = bill_product.bill_id
+        INNER JOIN products ON products.product_id = bill_product.product_id
         ) 
         WHERE bill_product.bill_id = ? ;`,
         billId,
         function (error, bills) {
-          console.log("bills", bills);
           if (error || bills.length == 0) {
-            result(null);
+            result([]);
           } else {
             result(bills);
           }
