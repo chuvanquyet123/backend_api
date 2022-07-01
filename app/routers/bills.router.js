@@ -3,5 +3,7 @@ module.exports = function (router) {
 
     router.get("/bills", billController.get_list);
 
+    router.get("/bills/:id", billController.detail);
+
     router.post("/bills", billController.add_bill);
 };

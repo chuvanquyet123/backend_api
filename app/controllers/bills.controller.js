@@ -11,6 +11,14 @@ exports.add_bill = function (req, res) {
     var data = req.body;
     Bill.create(data, function(response){
         res.send(response);
-        console.log(response.cart)
     });
+};
+
+exports.detail = function (req, res){
+    console.log(req.query.cart)
+    const userId = req.query.user_id;
+    Bill.getById(req.params.id, function(response){
+        res.send(response)
+        console.log('null',response)
+    }, userId);
 };
